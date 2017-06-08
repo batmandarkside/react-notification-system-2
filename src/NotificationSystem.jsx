@@ -110,12 +110,12 @@ var NotificationSystem = createReactClass({
     var _notification = merge({}, Constants.notification, notification);
     var notifications = this.state.notifications;
     var i;
-
-    if (!_notification.level) {
+    var getContentComponent = _notification.getContentComponent;
+    if (!_notification.level && !getContentComponent) {
       throw new Error('notification level is required.');
     }
 
-    if (Object.keys(Constants.levels).indexOf(_notification.level) === -1) {
+    if ((Object.keys(Constants.levels).indexOf(_notification.level) === -1) && !getContentComponent) {
       throw new Error('\'' + _notification.level + '\' is not a valid level.');
     }
 
@@ -127,9 +127,12 @@ var NotificationSystem = createReactClass({
       throw new Error('\'' + _notification.position + '\' is not a valid position.');
     }
 
+    if (!getContentComponent) {
+      _notification.level = _notification.level.toLowerCase();
+    }
+
     // Some preparations
     _notification.position = _notification.position.toLowerCase();
-    _notification.level = _notification.level.toLowerCase();
     _notification.autoDismiss = parseInt(_notification.autoDismiss, 10);
 
     _notification.uid = _notification.uid || this.uid;
