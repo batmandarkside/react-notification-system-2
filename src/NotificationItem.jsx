@@ -255,7 +255,8 @@ var NotificationItem = createReactClass({
     var className = classnames('notification', 'notification-' + notification.level, {
       'notification-visible': this.state.visible,
       'notification-hidden': !this.state.visible,
-      'notification-not-dismissible': !notification.dismissible
+      'notification-not-dismissible': !notification.dismissible,
+      [this.props.className]: !!this.props.className
     });
 
     if (this.props.getStyles.overrideStyle) {

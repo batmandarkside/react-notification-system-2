@@ -10,6 +10,7 @@ var NotificationContainer = createReactClass({
   propTypes: {
     position: PropTypes.string.isRequired,
     notifications: PropTypes.array.isRequired,
+    classNameContainer: PropTypes.string,
     getStyles: PropTypes.object
   },
 
@@ -44,6 +45,7 @@ var NotificationContainer = createReactClass({
       <NotificationItem
         ref={ 'notification-' + notification.uid }
         key={ notification.uid }
+        className={ notification.className }
         notification={ notification }
         getStyles={ self.props.getStyles }
         onRemove={ self.props.onRemove }
