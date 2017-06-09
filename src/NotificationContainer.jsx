@@ -41,10 +41,10 @@ var NotificationContainer = createReactClass({
       this.props.notifications.reverse();
     }
 
-    notifications = this.props.notifications.map(notification => (
+    notifications = this.props.notifications.map((notification, i) => (
       <NotificationItem
-        ref={ 'notification-' + notification.uid }
-        key={ notification.uid }
+        ref={ `notification-${notification.uid}` }
+        key={ `${notification.uid}-${i}` }
         className={ notification.className }
         notification={ notification }
         getStyles={ self.props.getStyles }

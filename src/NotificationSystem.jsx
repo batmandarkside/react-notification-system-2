@@ -251,7 +251,7 @@ var NotificationSystem = createReactClass({
     );
 
     if (notifications.length) {
-      containers = Object.keys(Constants.positions).map(function(position) {
+      containers = Object.keys(Constants.positions).map(function(position, i) {
         var _notifications = notifications.filter(function(notification) {
           return position === notification.position;
         });
@@ -263,7 +263,7 @@ var NotificationSystem = createReactClass({
         return (
           <NotificationContainer
             ref={ 'container-' + position }
-            key={ position }
+            key={ `${i}-${position}` }
             position={ position }
             notifications={ _notifications }
             getStyles={ self._getStyles }

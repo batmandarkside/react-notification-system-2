@@ -276,32 +276,56 @@ var NotificationItem = createReactClass({
         notificationStyle.paddingTop = 0;
         notificationStyle.paddingBottom = 0;
       }
-      notificationStyle.opacity = this.state.visible ? this._styles.notification.isVisible.opacity : this._styles.notification.isHidden.opacity;
+      notificationStyle.opacity = this.state.visible
+        ? this._styles.notification.isVisible.opacity
+        : this._styles.notification.isHidden.opacity;
     }
 
     if (notification.title) {
-      title = <h4 className="notification-title" style={ this._styles.title }>{ notification.title }</h4>;
+      title = (
+        <h4
+          className="notification-title"
+          style={ this._styles.title }>
+          { notification.title }
+        </h4>
+      );
     }
 
     if (notification.message) {
       if (this.props.allowHTML) {
         message = (
-          <div className="notification-message" style={ this._styles.messageWrapper } dangerouslySetInnerHTML={ this._allowHTML(notification.message) } />
+          <div
+            className="notification-message"
+            style={ this._styles.messageWrapper }
+            dangerouslySetInnerHTML={ this._allowHTML(notification.message) }
+          />
         );
       } else {
         message = (
-          <div className="notification-message" style={ this._styles.messageWrapper }>{ notification.message }</div>
+          <div
+            className="notification-message"
+            style={ this._styles.messageWrapper }>
+            { notification.message }
+          </div>
         );
       }
     }
 
     if (notification.dismissible) {
-      dismiss = <span className="notification-dismiss" style={ this._styles.dismiss }>&times;</span>;
+      dismiss = (
+        <span
+          className="notification-dismiss"
+          style={ this._styles.dismiss }>
+          &times;
+        </span>
+      );
     }
 
     if (notification.action) {
       actionButton = (
-        <div className="notification-action-wrapper" style={ this._styles.actionWrapper }>
+        <div
+          className="notification-action-wrapper"
+          style={ this._styles.actionWrapper }>
           <button className="notification-action-button"
             onClick={ this._defaultAction }
             style={ this._styles.action }>
@@ -318,12 +342,14 @@ var NotificationItem = createReactClass({
     if (getContentComponent) {
       content = getContentComponent();
     } else {
-      content = [
-        title,
-        message,
-        dismiss,
-        actionButton
-      ];
+      content = (
+        <div>
+          {title}
+          {message}
+          {dismiss}
+          {actionButton}
+        </div>
+      );
     }
 
     return (
@@ -334,7 +360,8 @@ var NotificationItem = createReactClass({
         onMouseLeave={ this._handleMouseLeave }
         style={ notificationStyle }
       >
-        {content}
+        {getContentComponent && getContentComponent()}
+        {!getContentComponent && content}
       </div>
     );
   }
