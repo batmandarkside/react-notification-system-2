@@ -1,4 +1,4 @@
-var CONSTANTS = {
+export const CONSTANTS = {
 
   // Positions
   positions: {
@@ -30,6 +30,3 @@ var CONSTANTS = {
     getContentComponent: null
   }
 };
-
-
-module.exports = CONSTANTS;

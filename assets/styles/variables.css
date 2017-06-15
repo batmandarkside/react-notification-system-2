@@ -1,0 +1,8 @@
+:root {
+  --bodyFont: 'Roboto', sans-serif;
+  --bodyFontSize: 16px;
+
+  --suceess: #b8e986;
+  --error: #ff936f;
+  --info: #fcc900;
+}

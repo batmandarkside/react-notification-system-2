@@ -1,6 +1,6 @@
 // Used for calculations
-var defaultWidth = 320;
-var defaultColors = {
+const defaultWidth = 320;
+const defaultColors = {
   success: {
     rgb: '94, 164, 0',
     hex: '#5ea400'
@@ -18,9 +18,9 @@ var defaultColors = {
     hex: '#369cc7'
   }
 };
-var defaultShadowOpacity = '0.9';
+const defaultShadowOpacity = '0.9';
 
-var STYLES = {
+export const STYLES = {
 
   Wrapper: {},
   Containers: {
@@ -111,39 +111,39 @@ var STYLES = {
     },
 
     success: {
-      borderTop: '2px solid ' + defaultColors.success.hex,
+      borderTop: `2px solid ${defaultColors.success.hex}`,
       backgroundColor: '#f0f5ea',
       color: '#4b583a',
-      WebkitBoxShadow: '0 0 1px rgba(' + defaultColors.success.rgb + ',' + defaultShadowOpacity + ')',
-      MozBoxShadow: '0 0 1px rgba(' + defaultColors.success.rgb + ',' + defaultShadowOpacity + ')',
-      boxShadow: '0 0 1px rgba(' + defaultColors.success.rgb + ',' + defaultShadowOpacity + ')'
+      WebkitBoxShadow: `0 0 1px rgba(${defaultColors.success.rgb}, ${defaultShadowOpacity})`,
+      MozBoxShadow: `0 0 1px rgba(${defaultColors.success.rgb}, ${defaultShadowOpacity})`,
+      boxShadow: `0 0 1px rgba(${defaultColors.success.rgb},${defaultShadowOpacity})`
     },
 
     error: {
-      borderTop: '2px solid ' + defaultColors.error.hex,
+      borderTop: `2px solid ${defaultColors.error.hex}`,
       backgroundColor: '#f4e9e9',
       color: '#412f2f',
-      WebkitBoxShadow: '0 0 1px rgba(' + defaultColors.error.rgb + ',' + defaultShadowOpacity + ')',
-      MozBoxShadow: '0 0 1px rgba(' + defaultColors.error.rgb + ',' + defaultShadowOpacity + ')',
-      boxShadow: '0 0 1px rgba(' + defaultColors.error.rgb + ',' + defaultShadowOpacity + ')'
+      WebkitBoxShadow: `0 0 1px rgba(${defaultColors.error.rgb}, ${defaultShadowOpacity})`,
+      MozBoxShadow: `0 0 1px rgba(${defaultColors.error.rgb}, ${defaultShadowOpacity})`,
+      boxShadow: `0 0 1px rgba(${defaultColors.error.rgb}, ${defaultShadowOpacity})`
     },
 
     warning: {
-      borderTop: '2px solid ' + defaultColors.warning.hex,
+      borderTop: `2px solid ${defaultColors.warning.hex}`,
       backgroundColor: '#f9f6f0',
       color: '#5a5343',
-      WebkitBoxShadow: '0 0 1px rgba(' + defaultColors.warning.rgb + ',' + defaultShadowOpacity + ')',
-      MozBoxShadow: '0 0 1px rgba(' + defaultColors.warning.rgb + ',' + defaultShadowOpacity + ')',
-      boxShadow: '0 0 1px rgba(' + defaultColors.warning.rgb + ',' + defaultShadowOpacity + ')'
+      WebkitBoxShadow: `0 0 1px rgba(${defaultColors.warning.rgb}, ${defaultShadowOpacity})`,
+      MozBoxShadow: `0 0 1px rgba(${defaultColors.warning.rgb}, ${defaultShadowOpacity})`,
+      boxShadow: `0 0 1px rgba( ${defaultColors.warning.rgb}, ${defaultShadowOpacity})`
     },
 
     info: {
-      borderTop: '2px solid ' + defaultColors.info.hex,
+      borderTop: `2px solid ${defaultColors.info.hex}`,
       backgroundColor: '#e8f0f4',
       color: '#41555d',
-      WebkitBoxShadow: '0 0 1px rgba(' + defaultColors.info.rgb + ',' + defaultShadowOpacity + ')',
-      MozBoxShadow: '0 0 1px rgba(' + defaultColors.info.rgb + ',' + defaultShadowOpacity + ')',
-      boxShadow: '0 0 1px rgba(' + defaultColors.info.rgb + ',' + defaultShadowOpacity + ')'
+      WebkitBoxShadow: `0 0 1px rgba(${defaultColors.info.rgb}, ${defaultShadowOpacity})`,
+      MozBoxShadow: `0 0 1px rgba(${defaultColors.info.rgb}, ${defaultShadowOpacity})`,
+      boxShadow: `0 0 1px rgba(${defaultColors.info.rgb}, ${defaultShadowOpacity})`,
     }
   },
 
@@ -256,5 +256,3 @@ var STYLES = {
     }
   }
 };
-
-module.exports = STYLES;

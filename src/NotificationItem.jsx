@@ -1,11 +1,9 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
-var ReactDOM = require('react-dom');
-var Constants = require('./constants');
-var Helpers = require('./helpers');
-var merge = require('object-assign');
-var classnames = require('classnames');
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import ReactDOM from 'react-dom';
+import { CONSTANTS } from './constants';
+import { HELPERS } from './helpers';
 
 /* From Modernizr */
 var whichTransitionEvent = function() {
@@ -27,9 +25,9 @@ var whichTransitionEvent = function() {
   return transition;
 };
 
-var NotificationItem = createReactClass({
+class NotificationItem extends Component {
 
-  propTypes: {
+  static propTypes = {
     notification: PropTypes.object,
     getStyles: PropTypes.object,
     onRemove: PropTypes.func,
@@ -39,24 +37,33 @@ var NotificationItem = createReactClass({
       PropTypes.string,
       PropTypes.element
     ])
-  },
+  }
 
-  getDefaultProps: function() {
-    return {
-      noAnimation: false,
-      onRemove: function() {},
-      allowHTML: false
-    };
-  },
+  static defaultProps = {
+    noAnimation: false,
+    onRemove: function() {},
+    allowHTML: false
+  }
 
-  getInitialState: function() {
-    return {
-      visible: undefined,
-      removed: false
-    };
-  },
+  state = {
+    visible: undefined,
+    removed: false
+  }
 
-  componentWillMount: function() {
+  _styles = {}
+
+  _notificationTimer = null
+
+  _height = 0
+
+  _noAnimation = null
+
+  _isMounted =false
+
+  _removeCount = 0
+
+
+  componentWillMount() {
     var getStyles = this.props.getStyles;
     var level = this.props.notification.level;
 
@@ -74,121 +81,9 @@ var NotificationItem = createReactClass({
     if (!this.props.notification.dismissible) {
       this._styles.notification.cursor = 'default';
     }
-  },
+  }
 
-  _styles: {},
-
-  _notificationTimer: null,
-
-  _height: 0,
-
-  _noAnimation: null,
-
-  _isMounted: false,
-
-  _removeCount: 0,
-
-  _getCssPropertyByPosition: function() {
-    var position = this.props.notification.position;
-    var css = {};
-
-    switch (position) {
-    case Constants.positions.tl:
-    case Constants.positions.bl:
-      css = {
-        property: 'left',
-        value: -200
-      };
-      break;
-
-    case Constants.positions.tr:
-    case Constants.positions.br:
-      css = {
-        property: 'right',
-        value: -200
-      };
-      break;
-
-    case Constants.positions.tc:
-      css = {
-        property: 'top',
-        value: -100
-      };
-      break;
-
-    case Constants.positions.bc:
-      css = {
-        property: 'bottom',
-        value: -100
-      };
-      break;
-
-    default:
-    }
-
-    return css;
-  },
-
-  _defaultAction: function(event) {
-    var notification = this.props.notification;
-
-    event.preventDefault();
-    this._hideNotification();
-    if (typeof notification.action.callback === 'function') {
-      notification.action.callback();
-    }
-  },
-
-  _hideNotification: function() {
-    if (this._notificationTimer) {
-      this._notificationTimer.clear();
-    }
-
-    if (this._isMounted) {
-      this.setState({
-        visible: false,
-        removed: true
-      });
-    }
-
-    if (this._noAnimation) {
-      this._removeNotification();
-    }
-  },
-
-  _removeNotification: function() {
-    this.props.onRemove(this.props.notification.uid);
-  },
-
-  _dismiss: function() {
-    if (!this.props.notification.dismissible) {
-      return;
-    }
-
-    this._hideNotification();
-  },
-
-  _showNotification: function() {
-    var self = this;
-    setTimeout(function() {
-      if (self._isMounted) {
-        self.setState({
-          visible: true
-        });
-      }
-    }, 50);
-  },
-
-  _onTransitionEnd: function() {
-    if (this._removeCount > 0) return;
-    if (this.state.removed) {
-      this._removeCount++;
-      this._removeNotification();
-    }
-  },
-
-  componentDidMount: function() {
-    var self = this;
+  componentDidMount() {
     var transitionEvent = whichTransitionEvent();
     var notification = this.props.notification;
     var element = ReactDOM.findDOMNode(this);
@@ -208,42 +103,140 @@ var NotificationItem = createReactClass({
 
 
     if (notification.autoDismiss) {
-      this._notificationTimer = new Helpers.Timer(function() {
-        self._hideNotification();
+      this._notificationTimer = new HELPERS.Timer(() => {
+        this._hideNotification();
       }, notification.autoDismiss * 1000);
     }
 
     this._showNotification();
-  },
+  }
 
-  _handleMouseEnter: function() {
-    var notification = this.props.notification;
-    if (notification.autoDismiss) {
-      this._notificationTimer.pause();
-    }
-  },
-
-  _handleMouseLeave: function() {
-    var notification = this.props.notification;
-    if (notification.autoDismiss) {
-      this._notificationTimer.resume();
-    }
-  },
-
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     var element = ReactDOM.findDOMNode(this);
     var transitionEvent = whichTransitionEvent();
     element.removeEventListener(transitionEvent, this._onTransitionEnd);
     this._isMounted = false;
-  },
+  }
 
-  _allowHTML: function(string) {
-    return { __html: string };
-  },
+  _getCssPropertyByPosition() {
+    var position = this.props.notification.position;
+    var css = {};
 
-  render: function() {
+    switch (position) {
+    case CONSTANTS.positions.tl:
+    case CONSTANTS.positions.bl:
+      css = {
+        property: 'left',
+        value: -200
+      };
+      break;
+
+    case CONSTANTS.positions.tr:
+    case CONSTANTS.positions.br:
+      css = {
+        property: 'right',
+        value: -200
+      };
+      break;
+
+    case CONSTANTS.positions.tc:
+      css = {
+        property: 'top',
+        value: -100
+      };
+      break;
+
+    case CONSTANTS.positions.bc:
+      css = {
+        property: 'bottom',
+        value: -100
+      };
+      break;
+
+    default:
+    }
+
+    return css;
+  }
+
+  _defaultAction = (event) => {
     var notification = this.props.notification;
-    var notificationStyle = merge({}, this._styles.notification);
+
+    event.preventDefault();
+    this._hideNotification();
+    if (typeof notification.action.callback === 'function') {
+      notification.action.callback();
+    }
+  }
+
+  _hideNotification = () => {
+    if (this._notificationTimer) {
+      this._notificationTimer.clear();
+    }
+
+    if (this._isMounted) {
+      this.setState({
+        visible: false,
+        removed: true
+      });
+    }
+
+    if (this._noAnimation) {
+      this._removeNotification();
+    }
+  }
+
+  _removeNotification = () => {
+    this.props.onRemove(this.props.notification.uid);
+  }
+
+  _dismiss = () => {
+    if (!this.props.notification.dismissible) {
+      return;
+    }
+
+    this._hideNotification();
+  }
+
+  _showNotification = () => {
+    setTimeout(() => {
+      if (this._isMounted) {
+        this.setState({
+          visible: true
+        });
+      }
+    }, 50);
+  }
+
+  _onTransitionEnd = () => {
+    if (this._removeCount > 0) return;
+    if (this.state.removed) {
+      this._removeCount++;
+      this._removeNotification();
+    }
+  }
+
+
+  _handleMouseEnter = () => {
+    var notification = this.props.notification;
+    if (notification.autoDismiss) {
+      this._notificationTimer.pause();
+    }
+  }
+
+  _handleMouseLeave = () => {
+    var notification = this.props.notification;
+    if (notification.autoDismiss) {
+      this._notificationTimer.resume();
+    }
+  }
+
+
+  _allowHTML = string => ({ __html: string })
+
+  render() {
+    var notification = this.props.notification;
+    var notificationStyle = { ...this._styles.notification };
     var cssByPos = this._getCssPropertyByPosition();
     var dismiss = null;
     var actionButton = null;
@@ -366,6 +359,6 @@ var NotificationItem = createReactClass({
     );
   }
 
-});
+};
 
-module.exports = NotificationItem;
+export default NotificationItem;

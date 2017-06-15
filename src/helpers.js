@@ -1,5 +1,5 @@
-var Helpers = {
-  Timer: function(callback, delay) {
+export const HELPERS = {
+  Timer(callback, delay) {
     var timerId;
     var start;
     var remaining = delay;
@@ -22,5 +22,3 @@ var Helpers = {
     this.resume();
   }
 };
-
-module.exports = Helpers;
