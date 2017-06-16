@@ -83,24 +83,4 @@
     padding: 20px 0;
     position: relative;
   }
-
-  &__success {
-    color: var(--black);
-    background-color: var(--suceess);
-  }
-
-  &__error {
-    color: var(--black);
-    background-color: var(--error);
-  }
-
-  &__warning {
-    color: var(--black);
-    background-color: var(--error);
-  }
-
-  &__info {
-    color: var(--black);
-    background-color: var(--info);
-  }
 }

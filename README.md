@@ -20,6 +20,10 @@ npm install react-notification-system-2
 
 build webpack webpack-dev-server PostCss 
 
+remove actions and children
+
+add getContentComponent
+
 For **React 15.6.1
 
 
@@ -103,7 +107,6 @@ The notification object has the following properties:
 | autoDismiss  | integer         | 5         | Delay in seconds for the notification go away. Set this to **0** to not auto-dismiss the notification                                                                      |
 | dismissible  | bool            | true      | Set if notification is dismissible by the user. [See more](#dismissible)                                                                                                  |
 | action       | object          | null      | Add a button with label and callback function (callback is optional). [See more](#action)                                                                                                        |
-| children       | element,string          | null      | Adds custom content, and overrides `action` (if defined) [See more](#children)                                                                                                        |
 | onAdd | function | null | A callback function that will be called when the notification is successfully added. The first argument is the original notification e.g. `function (notification) { console.log(notification.title + 'was added'); }` |
 | onRemove     | function        | null      | A callback function that will be called when the notification is about to be removed. The first argument is the original notification e.g. `function (notification) { console.log(notification.title + 'was removed'); }` |
 | uid          | integer/string           | null      | Overrides the internal `uid`. Useful if you are managing your notifications id. Notifications with same `uid` won't be displayed. |
@@ -112,40 +115,6 @@ The notification object has the following properties:
 ### Dismissible
 
 If set to false, the notification will not display the dismiss ('x') button and will only be dismissible programmatically or after autoDismiss timeout. [See more](#removenotificationnotification)
-
-### Action
-
-Add a button and a callback function to the notification. If this button is clicked, the callback function is called (if provided) and the notification is dismissed.
-
-```js
-notification = {
-  [...],
-  action: {
-    label: 'Button name',
-    callback: function() {
-      console.log('Notification button clicked!');
-    }
-  }
-}
-
-```
-
-### Children
-
-Add custom content / react elements
-
-```js
-notification = {
-  [...],
-  children: (
-    <div>
-      <h2>Hello World</h2>
-      <a>Anchor</a>
-    </div>
-  )
-}
-
-```
 
 ## Styles
 

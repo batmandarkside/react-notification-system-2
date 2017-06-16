@@ -57,7 +57,7 @@ class NotificationSystem extends Component {
     },
 
     container(position) {
-      var override = this.overrideStyle.Containers || {};
+      const override = this.overrideStyle.Containers || {};
       if (!this.overrideStyle) return {};
 
       this.overrideWidth = STYLES.Containers.DefaultStyle.width;
@@ -103,15 +103,9 @@ class NotificationSystem extends Component {
   }
 
   _didNotificationRemoved = (uid) => {
-    let notification;
     const { notifications } = this.state;
-    const notificationsFiltered = notifications.filter((toCheck) => {
-      if (toCheck.uid === uid) {
-        notification = toCheck;
-        return false;
-      }
-      return true;
-    });
+    const notificationsFiltered = notifications.filter((toCheck) => toCheck.uid === uid);
+    const notificationFound = notifications.find((toCheck) => toCheck.uid === uid);
 
     if (this._isMounted) {
       this.setState({
@@ -119,8 +113,8 @@ class NotificationSystem extends Component {
       });
     }
 
-    if (notification && notification.onRemove) {
-      notification.onRemove(notification);
+    if (notificationFound && notificationFound.onRemove) {
+      notificationFound.onRemove(notificationFound);
     }
   }
 
@@ -208,12 +202,13 @@ class NotificationSystem extends Component {
   }
 
   editNotification = (notification, newNotification) => {
+    const { notifications } = this.state;
     let foundNotification = null;
     // NOTE: Find state notification to update by using
     // `setState` and forcing React to re-render the component.
     const uid = notification.uid ? notification.uid : notification;
 
-    var newNotifications = this.state.notifications.filter((stateNotification) => {
+    const newNotifications = notifications.filter((stateNotification) => {
       if (uid === stateNotification.uid) {
         foundNotification = stateNotification;
         return false;
@@ -269,11 +264,11 @@ class NotificationSystem extends Component {
         return (
           <NotificationContainer
             ref={`container-${position}`}
-            key={ `${i}-${position}` }
-            position={ position }
-            notifications={ _notifications }
-            getStyles={ this._getStyles }
-            onRemove={ this._didNotificationRemoved }
+            key={`${i}-${position}`}
+            position={position}
+            notifications={_notifications}
+            getStyles={this._getStyles}
+            onRemove={this._didNotificationRemoved}
             noAnimation={ noAnimation }
             allowHTML={ allowHTML }
           />

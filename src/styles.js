@@ -99,15 +99,7 @@ export const STYLES = {
       transition: '0.3s ease-in-out',
       WebkitTransform: 'translate3d(0, 0, 0)',
       transform: 'translate3d(0, 0, 0)',
-      willChange: 'transform, opacity',
-
-      isHidden: {
-        opacity: 0
-      },
-
-      isVisible: {
-        opacity: 1
-      }
+      willChange: 'transform, opacity'
     },
 
     success: {
@@ -215,44 +207,6 @@ export const STYLES = {
     info: {
       color: '#e8f0f4',
       backgroundColor: '#a4becb'
-    }
-  },
-
-  Action: {
-    DefaultStyle: {
-      background: '#ffffff',
-      borderRadius: '2px',
-      padding: '6px 20px',
-      fontWeight: 'bold',
-      margin: '10px 0 0 0',
-      border: 0
-    },
-
-    success: {
-      backgroundColor: defaultColors.success.hex,
-      color: '#ffffff'
-    },
-
-    error: {
-      backgroundColor: defaultColors.error.hex,
-      color: '#ffffff'
-    },
-
-    warning: {
-      backgroundColor: defaultColors.warning.hex,
-      color: '#ffffff'
-    },
-
-    info: {
-      backgroundColor: defaultColors.info.hex,
-      color: '#ffffff'
-    }
-  },
-
-  ActionWrapper: {
-    DefaultStyle: {
-      margin: 0,
-      padding: 0
     }
   }
 };

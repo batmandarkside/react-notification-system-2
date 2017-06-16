@@ -32,7 +32,7 @@ class NotificationContainer extends Component {
 
     const classNameSelector = classnames(
       'notification-container',
-      'notifications-' + this.props.position, {
+      `notifications-${this.props.position}`, {
         [classNameContainer]: !!classNameContainer
       }
     );
@@ -55,7 +55,6 @@ class NotificationContainer extends Component {
         onRemove={ this.props.onRemove }
         noAnimation={ this.props.noAnimation }
         allowHTML={ this.props.allowHTML }
-        children={ this.props.children }
       />
     ));
 
