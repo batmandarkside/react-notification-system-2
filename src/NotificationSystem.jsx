@@ -104,7 +104,8 @@ class NotificationSystem extends Component {
 
   _didNotificationRemoved = (uid) => {
     let notification;
-    const notifications = this.state.notifications.filter(function(toCheck) {
+    const { notifications } = this.state;
+    const notificationsFiltered = notifications.filter((toCheck) => {
       if (toCheck.uid === uid) {
         notification = toCheck;
         return false;
@@ -113,7 +114,9 @@ class NotificationSystem extends Component {
     });
 
     if (this._isMounted) {
-      this.setState({ notifications: notifications });
+      this.setState({
+        notifications: notificationsFiltered
+      });
     }
 
     if (notification && notification.onRemove) {
@@ -156,7 +159,7 @@ class NotificationSystem extends Component {
     _notification.autoDismiss = parseInt(_notification.autoDismiss, 10);
 
     _notification.uid = _notification.uid || this.uid;
-    _notification.ref = 'notification-' + _notification.uid;
+    _notification.ref = `notification-${_notification.uid}`;
     this.uid += 1;
 
     // do not add if the notification already exists based on supplied uid
@@ -200,7 +203,7 @@ class NotificationSystem extends Component {
   }
 
   removeNotification = (notification) => {
-    var foundNotification = this.getNotificationRef(notification);
+    const foundNotification = this.getNotificationRef(notification);
     return foundNotification && foundNotification._hideNotification();
   }
 
@@ -245,9 +248,9 @@ class NotificationSystem extends Component {
   }
 
   render() {
+    const { className, noAnimation, allowHTML } = this.props;
     let containers = null;
-    let notifications = this.state.notifications;
-    const className = this.props.className;
+    const { notifications } = this.state;
 
     const classNameSelector = classnames(
       'notifications-wrapper', {
@@ -257,9 +260,7 @@ class NotificationSystem extends Component {
 
     if (notifications.length) {
       containers = Object.keys(CONSTANTS.positions).map((position, i) => {
-        const _notifications = notifications.filter(notification =>
-          position === notification.position
-        );
+        const _notifications = notifications.filter(notification => position === notification.position);
 
         if (!_notifications.length) {
           return null;
@@ -267,14 +268,14 @@ class NotificationSystem extends Component {
 
         return (
           <NotificationContainer
-            ref={ 'container-' + position }
+            ref={`container-${position}`}
             key={ `${i}-${position}` }
             position={ position }
             notifications={ _notifications }
             getStyles={ this._getStyles }
             onRemove={ this._didNotificationRemoved }
-            noAnimation={ this.props.noAnimation }
-            allowHTML={ this.props.allowHTML }
+            noAnimation={ noAnimation }
+            allowHTML={ allowHTML }
           />
         );
       });
@@ -282,7 +283,10 @@ class NotificationSystem extends Component {
 
 
     return (
-      <div className={ classNameSelector } style={ this._getStyles.wrapper() }>
+      <div
+        className={classNameSelector}
+        style={this._getStyles.wrapper()}
+      >
         { containers }
       </div>
     );

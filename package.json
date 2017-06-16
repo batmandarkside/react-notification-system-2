@@ -1,12 +1,15 @@
 {
   "name": "react-notification-system-2",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "A React Notification System fully customized",
   "main": "dist/NotificationSystem.js",
   "scripts": {
     "dev:server:start": "webpack-dev-server --hot --host 127.0.0.1 --port 8000",
     "dev": "NODE_ENV=development npm run dev:server:start",
     "run:compile": "rm -rf ./lib/ && babel  --plugins=add-module-exports --presets es2015,react,stage-0 -d lib/ src/",
+    "compile": "export NODE_ENV=production && export BABEL_ENV=production && npm run run:compile",
+    "build": "export NODE_ENV=production && export BABEL_ENV=production && npm run run:build",
+    "run:build": "rm -rf ./dist/ && webpack --progress --colors",
     "test": "NODE_ENV=development jest --coverage"
   },
   "repository": {

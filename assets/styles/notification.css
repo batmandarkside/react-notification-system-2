@@ -1,0 +1,26 @@
+@import "./variables.css";
+
+.notification-container {
+
+  & .notification {
+    &-success {
+      color: var(--black);
+      background-color: var(--suceess);
+    }
+
+    &-error {
+      color: var(--black);
+      background-color: var(--error);
+    }
+
+    &-warning {
+      color: var(--black);
+      background-color: var(--error);
+    }
+
+    &-info {
+      color: var(--black);
+      background-color: var(--info);
+    }
+  }
+}

@@ -13,7 +13,7 @@ class App extends Component {
         level      : 'warning',
         position   : 'tr',
         message: 'base notification',
-        autoDismiss: 4
+        autoDismiss: 20
       },
       success: {
         level   : 'success',
@@ -57,7 +57,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NotificationSystem ref={el => (this.NOTIFY = el)} />
+        <NotificationSystem
+          noAnimation
+          ref={el => (this.NOTIFY = el)}
+        />
 
         <div>
           <button onClick={() => this.addNotify('base')}>add base</button>

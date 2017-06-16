@@ -13,22 +13,15 @@ _Initially built for [Eterpret](http://dev.eterpret.com) @ [Scalable Path](http:
 This component is available as CommonJS and UMD module. Install via NPM running:
 
 ```
-npm install react-notification-system
+npm install react-notification-system-2
 ```
 
 ### Important
 
-For **React ^0.14.x** or **React ^15.x.x**, use version 0.2.x:
+build webpack webpack-dev-server PostCss 
 
-```
-npm install react-notification-system@0.2.x
-```
+For **React 15.6.1
 
-For **React 0.13.x**, use version 0.1.x:
-
-```
-npm install react-notification-system@0.1.x
-```
 
 
 

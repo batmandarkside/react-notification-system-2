@@ -6,17 +6,17 @@ import { CONSTANTS } from './constants';
 import { HELPERS } from './helpers';
 
 /* From Modernizr */
-var whichTransitionEvent = function() {
-  var el = document.createElement('fakeelement');
-  var transition;
-  var transitions = {
-    transition: 'transitionend',
-    OTransition: 'oTransitionEnd',
-    MozTransition: 'transitionend',
+var whichTransitionEvent = function () {
+  const el = document.createElement('fakeelement');
+  let transition = undefined;
+  const transitions = {
+    transition      : 'transitionend',
+    OTransition     : 'oTransitionEnd',
+    MozTransition   : 'transitionend',
     WebkitTransition: 'webkitTransitionEnd'
   };
 
-  Object.keys(transitions).forEach(function(transitionKey) {
+  Object.keys(transitions).forEach(function (transitionKey) {
     if (el.style[transitionKey] !== undefined) {
       transition = transitions[transitionKey];
     }
@@ -29,11 +29,11 @@ class NotificationItem extends Component {
 
   static propTypes = {
     notification: PropTypes.object,
-    getStyles: PropTypes.object,
-    onRemove: PropTypes.func,
-    allowHTML: PropTypes.bool,
-    noAnimation: PropTypes.bool,
-    children: PropTypes.oneOfType([
+    getStyles   : PropTypes.object,
+    onRemove    : PropTypes.func,
+    allowHTML   : PropTypes.bool,
+    noAnimation : PropTypes.bool,
+    children    : PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.element
     ])
@@ -41,8 +41,8 @@ class NotificationItem extends Component {
 
   static defaultProps = {
     noAnimation: false,
-    onRemove: function() {},
-    allowHTML: false
+    onRemove   : () => {},
+    allowHTML  : false
   }
 
   state = {
@@ -58,7 +58,7 @@ class NotificationItem extends Component {
 
   _noAnimation = null
 
-  _isMounted =false
+  _isMounted = false
 
   _removeCount = 0
 
@@ -70,12 +70,12 @@ class NotificationItem extends Component {
     this._noAnimation = this.props.noAnimation;
 
     this._styles = {
-      notification: getStyles.byElement('notification')(level),
-      title: getStyles.byElement('title')(level),
-      dismiss: getStyles.byElement('dismiss')(level),
+      notification  : getStyles.byElement('notification')(level),
+      title         : getStyles.byElement('title')(level),
+      dismiss       : getStyles.byElement('dismiss')(level),
       messageWrapper: getStyles.byElement('messageWrapper')(level),
-      actionWrapper: getStyles.byElement('actionWrapper')(level),
-      action: getStyles.byElement('action')(level)
+      actionWrapper : getStyles.byElement('actionWrapper')(level),
+      action        : getStyles.byElement('action')(level)
     };
 
     if (!this.props.notification.dismissible) {
@@ -84,9 +84,9 @@ class NotificationItem extends Component {
   }
 
   componentDidMount() {
-    var transitionEvent = whichTransitionEvent();
-    var notification = this.props.notification;
-    var element = ReactDOM.findDOMNode(this);
+    const transitionEvent = whichTransitionEvent();
+    const notification = this.props.notification;
+    const element = ReactDOM.findDOMNode(this);
 
     this._height = element.offsetHeight;
 
@@ -112,48 +112,48 @@ class NotificationItem extends Component {
   }
 
   componentWillUnmount() {
-    var element = ReactDOM.findDOMNode(this);
-    var transitionEvent = whichTransitionEvent();
+    const element = ReactDOM.findDOMNode(this);
+    const transitionEvent = whichTransitionEvent();
     element.removeEventListener(transitionEvent, this._onTransitionEnd);
     this._isMounted = false;
   }
 
-  _getCssPropertyByPosition() {
-    var position = this.props.notification.position;
-    var css = {};
+  _getCssPropertyByPosition = () => {
+    let position = this.props.notification.position;
+    let css = {};
 
     switch (position) {
-    case CONSTANTS.positions.tl:
-    case CONSTANTS.positions.bl:
-      css = {
-        property: 'left',
-        value: -200
-      };
-      break;
+      case CONSTANTS.positions.tl:
+      case CONSTANTS.positions.bl:
+        css = {
+          property: 'left',
+          value   : -200
+        };
+        break;
 
-    case CONSTANTS.positions.tr:
-    case CONSTANTS.positions.br:
-      css = {
-        property: 'right',
-        value: -200
-      };
-      break;
+      case CONSTANTS.positions.tr:
+      case CONSTANTS.positions.br:
+        css = {
+          property: 'right',
+          value   : -200
+        };
+        break;
 
-    case CONSTANTS.positions.tc:
-      css = {
-        property: 'top',
-        value: -100
-      };
-      break;
+      case CONSTANTS.positions.tc:
+        css = {
+          property: 'top',
+          value   : -100
+        };
+        break;
 
-    case CONSTANTS.positions.bc:
-      css = {
-        property: 'bottom',
-        value: -100
-      };
-      break;
+      case CONSTANTS.positions.bc:
+        css = {
+          property: 'bottom',
+          value   : -100
+        };
+        break;
 
-    default:
+      default:
     }
 
     return css;
@@ -232,27 +232,33 @@ class NotificationItem extends Component {
   }
 
 
-  _allowHTML = string => ({ __html: string })
+  _allowHTML = htmlString => ({ __html: htmlString })
 
   render() {
-    var notification = this.props.notification;
-    var notificationStyle = { ...this._styles.notification };
-    var cssByPos = this._getCssPropertyByPosition();
-    var dismiss = null;
-    var actionButton = null;
-    var title = null;
-    var message = null;
-    var content = null;
-    var getContentComponent = notification.getContentComponent;
+    const {
+      notification,
+      getStyles,
+      className,
+      allowHTML
+    } = this.props;
 
-    var className = classnames('notification', 'notification-' + notification.level, {
-      'notification-visible': this.state.visible,
-      'notification-hidden': !this.state.visible,
+    const getContentComponent = notification.getContentComponent;
+    const notificationStyle = { ...this._styles.notification };
+    const cssByPos = this._getCssPropertyByPosition();
+    let dismiss = null;
+    let actionButton = null;
+    let title = null;
+    let message = null;
+    let content = null;
+
+    const classNameSelector = classnames('notification', `notification-${notification.level}`, {
+      'notification-visible'        : this.state.visible,
+      'notification-hidden'         : !this.state.visible,
       'notification-not-dismissible': !notification.dismissible,
-      [this.props.className]: !!this.props.className
+      [className]        : !!className
     });
 
-    if (this.props.getStyles.overrideStyle) {
+    if (getStyles.overrideStyle) {
       if (!this.state.visible && !this.state.removed) {
         notificationStyle[cssByPos.property] = cssByPos.value;
       }
@@ -285,7 +291,7 @@ class NotificationItem extends Component {
     }
 
     if (notification.message) {
-      if (this.props.allowHTML) {
+      if (allowHTML) {
         message = (
           <div
             className="notification-message"
@@ -320,9 +326,9 @@ class NotificationItem extends Component {
           className="notification-action-wrapper"
           style={ this._styles.actionWrapper }>
           <button className="notification-action-button"
-            onClick={ this._defaultAction }
-            style={ this._styles.action }>
-              { notification.action.label }
+                  onClick={ this._defaultAction }
+                  style={ this._styles.action }>
+            { notification.action.label }
           </button>
         </div>
       );
@@ -347,7 +353,7 @@ class NotificationItem extends Component {
 
     return (
       <div
-        className={ className }
+        className={ classNameSelector }
         onClick={ this._dismiss }
         onMouseEnter={ this._handleMouseEnter }
         onMouseLeave={ this._handleMouseLeave }
@@ -358,7 +364,7 @@ class NotificationItem extends Component {
       </div>
     );
   }
+}
 
-};
 
 export default NotificationItem;

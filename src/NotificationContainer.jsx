@@ -7,10 +7,10 @@ import classnames from 'classnames';
 class NotificationContainer extends Component {
 
   static propTypes = {
-    position: PropTypes.string.isRequired,
-    notifications: PropTypes.array.isRequired,
+    position          : PropTypes.string.isRequired,
+    notifications     : PropTypes.array.isRequired,
     classNameContainer: PropTypes.string,
-    getStyles: PropTypes.object
+    getStyles         : PropTypes.object
   }
 
   _style = {}
@@ -21,8 +21,7 @@ class NotificationContainer extends Component {
 
     if (
       this.props.getStyles.overrideWidth &&
-      (this.props.position === CONSTANTS.positions.tc || this.props.position === CONSTANTS.positions.bc))
-    {
+      (this.props.position === CONSTANTS.positions.tc || this.props.position === CONSTANTS.positions.bc)) {
       this._style.marginLeft = -(this.props.getStyles.overrideWidth / 2);
     }
   }
@@ -38,7 +37,11 @@ class NotificationContainer extends Component {
       }
     );
 
-    if ([CONSTANTS.positions.bl, CONSTANTS.positions.br, CONSTANTS.positions.bc].indexOf(this.props.position) > -1) {
+    if ([
+        CONSTANTS.positions.bl,
+        CONSTANTS.positions.br,
+        CONSTANTS.positions.bc
+      ].indexOf(this.props.position) > -1) {
       this.props.notifications.reverse();
     }
 
@@ -62,7 +65,6 @@ class NotificationContainer extends Component {
       </div>
     );
   }
-};
+}
 
-
-module.exports = NotificationContainer;
+export default NotificationContainer;
