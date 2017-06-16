@@ -1,8 +1,10 @@
+sudo: false
 language: node_js
 node_js:
-  - "0.12"
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-addons:
-  firefox: "39.0"
+    - "v6"
+script:
+    - npm run build
+cache:
+  yarn: true
+  directories:
+    - node_modules

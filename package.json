@@ -2,8 +2,9 @@
   "name": "react-notification-system-2",
   "version": "0.4.0",
   "description": "A React Notification System fully customized",
-  "main": "dist/NotificationSystem.js",
+  "main": "lib/NotificationSystem.js",
   "scripts": {
+    "prepublish": "npm run build && npm run compile",
     "dev:server:start": "webpack-dev-server --hot --host 127.0.0.1 --port 8000",
     "dev": "NODE_ENV=development npm run dev:server:start",
     "run:compile": "rm -rf ./lib/ && babel  --plugins=add-module-exports --presets es2015,react,stage-0 -d lib/ src/",
