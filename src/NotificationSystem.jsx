@@ -104,7 +104,7 @@ class NotificationSystem extends Component {
 
   _didNotificationRemoved = (uid) => {
     const { notifications } = this.state;
-    const notificationsFiltered = notifications.filter((toCheck) => toCheck.uid === uid);
+    const notificationsFiltered = notifications.filter((toCheck) => toCheck.uid !== uid);
     const notificationFound = notifications.find((toCheck) => toCheck.uid === uid);
 
     if (this._isMounted) {

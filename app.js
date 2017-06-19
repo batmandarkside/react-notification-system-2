@@ -114,6 +114,7 @@ class App extends Component {
       <Layout>
         <Overlay />
         <NotificationSystem
+          noAnimation
           ref={el => (this.NOTIFY = el)}
         />
 
