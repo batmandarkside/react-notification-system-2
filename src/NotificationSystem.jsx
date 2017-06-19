@@ -179,7 +179,7 @@ class NotificationSystem extends Component {
   getNotificationRef = (notification) => {
     let foundNotification = null;
 
-    Object.keys(this.refs).forEach(function(container) {
+    Object.keys(this.refs).forEach((container) => {
       if (container.indexOf('container') > -1) {
         Object.keys(this.refs[container].refs).forEach((_notification) => {
           const uid = notification.uid ? notification.uid : notification;

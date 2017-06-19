@@ -16,7 +16,7 @@ var whichTransitionEvent = function () {
     WebkitTransition: 'webkitTransitionEnd'
   };
 
-  Object.keys(transitions).forEach(function (transitionKey) {
+  Object.keys(transitions).forEach((transitionKey) => {
     if (el.style[transitionKey] !== undefined) {
       transition = transitions[transitionKey];
     }
