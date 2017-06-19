@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.4.0 - jun  2017
+  * build webpack webpack-dev-server PostCss   
+  * remove actions and children   
+  * add getContentComponent
+  
 ## 0.2.14 - May 3, 2017
 
 * Ability to [edit notifications](https://github.com/igorprado/react-notification-system#removenotificationnotification). (thanks to @syndbg)

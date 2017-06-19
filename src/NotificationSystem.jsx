@@ -1,37 +1,66 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
-var merge = require('object-assign');
-var NotificationContainer = require('./NotificationContainer');
-var Constants = require('./constants');
-var Styles = require('./styles');
-var classnames = require('classnames');
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import NotificationContainer from './NotificationContainer';
+import { CONSTANTS } from './constants';
+import { STYLES } from './styles';
 
-var NotificationSystem = createReactClass({
+class NotificationSystem extends Component {
 
-  uid: 3400,
+  static propTypes = {
+    style: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object
+    ]),
+    noAnimation: PropTypes.bool,
+    allowHTML: PropTypes.bool
+  }
 
-  _isMounted: false,
+  static defaultProps = {
+    style: {},
+    noAnimation: false,
+    allowHTML: false
+  }
 
-  _getStyles: {
+  state = {
+    notifications: []
+  }
+
+  componentDidMount() {
+    this._getStyles.setOverrideStyle(this.props.style);
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  uid = 3400
+
+  _isMounted = false
+
+  _getStyles = {
     overrideStyle: {},
 
     overrideWidth: null,
 
-    setOverrideStyle: function(style) {
+    setOverrideStyle(style) {
       this.overrideStyle = style;
     },
 
-    wrapper: function() {
+    wrapper() {
       if (!this.overrideStyle) return {};
-      return merge({}, Styles.Wrapper, this.overrideStyle.Wrapper);
+      return {
+        ...STYLES.Wrapper,
+        ...this.overrideStyle.Wrapper
+      };
     },
 
-    container: function(position) {
-      var override = this.overrideStyle.Containers || {};
+    container(position) {
+      const override = this.overrideStyle.Containers || {};
       if (!this.overrideStyle) return {};
 
-      this.overrideWidth = Styles.Containers.DefaultStyle.width;
+      this.overrideWidth = STYLES.Containers.DefaultStyle.width;
 
       if (override.DefaultStyle && override.DefaultStyle.width) {
         this.overrideWidth = override.DefaultStyle.width;
@@ -41,7 +70,12 @@ var NotificationSystem = createReactClass({
         this.overrideWidth = override[position].width;
       }
 
-      return merge({}, Styles.Containers.DefaultStyle, Styles.Containers[position], override.DefaultStyle, override[position]);
+      return {
+        ...STYLES.Containers.DefaultStyle,
+        ...STYLES.Containers[position],
+        ...override.DefaultStyle,
+        ...override[position]
+      };
     },
 
     elements: {
@@ -53,69 +87,52 @@ var NotificationSystem = createReactClass({
       actionWrapper: 'ActionWrapper'
     },
 
-    byElement: function(element) {
-      var self = this;
-      return function(level) {
-        var _element = self.elements[element];
-        var override = self.overrideStyle[_element] || {};
-        if (!self.overrideStyle) return {};
-        return merge({}, Styles[_element].DefaultStyle, Styles[_element][level], override.DefaultStyle, override[level]);
+    byElement(element) {
+      return (level) => {
+        const _element = this.elements[element];
+        const override = this.overrideStyle[_element] || {};
+        if (!this.overrideStyle) return {};
+        return {
+          ...STYLES[_element].DefaultStyle,
+          ...STYLES[_element][level],
+          ...override.DefaultStyle,
+          ...override[level]
+        };
       };
     }
-  },
+  }
 
-  _didNotificationRemoved: function(uid) {
-    var notification;
-    var notifications = this.state.notifications.filter(function(toCheck) {
-      if (toCheck.uid === uid) {
-        notification = toCheck;
-        return false;
-      }
-      return true;
-    });
+  _didNotificationRemoved = (uid) => {
+    const { notifications } = this.state;
+    const notificationsFiltered = notifications.filter((toCheck) => toCheck.uid !== uid);
+    const notificationFound = notifications.find((toCheck) => toCheck.uid === uid);
 
     if (this._isMounted) {
-      this.setState({ notifications: notifications });
+      this.setState({
+        notifications: notificationsFiltered
+      });
     }
 
-    if (notification && notification.onRemove) {
-      notification.onRemove(notification);
+    if (notificationFound && notificationFound.onRemove) {
+      notificationFound.onRemove(notificationFound);
     }
-  },
+  }
 
-  getInitialState: function() {
-    return {
-      notifications: []
+
+  addNotification = (notification) => {
+    const _notification = {
+      ...CONSTANTS.notification,
+      ...notification
     };
-  },
+    const notifications = this.state.notifications;
+    let i;
+    const getContentComponent = _notification.getContentComponent;
 
-  propTypes: {
-    style: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.object
-    ]),
-    noAnimation: PropTypes.bool,
-    allowHTML: PropTypes.bool
-  },
-
-  getDefaultProps: function() {
-    return {
-      style: {},
-      noAnimation: false,
-      allowHTML: false
-    };
-  },
-
-  addNotification: function(notification) {
-    var _notification = merge({}, Constants.notification, notification);
-    var notifications = this.state.notifications;
-    var i;
-    var getContentComponent = _notification.getContentComponent;
     if (!_notification.level && !getContentComponent) {
       throw new Error('notification level is required.');
     }
 
-    if ((Object.keys(Constants.levels).indexOf(_notification.level) === -1) && !getContentComponent) {
+    if ((Object.keys(CONSTANTS.levels).indexOf(_notification.level) === -1) && !getContentComponent) {
       throw new Error('\'' + _notification.level + '\' is not a valid level.');
     }
 
@@ -123,7 +140,7 @@ var NotificationSystem = createReactClass({
       throw new Error('\'autoDismiss\' must be a number.');
     }
 
-    if (Object.keys(Constants.positions).indexOf(_notification.position) === -1) {
+    if (Object.keys(CONSTANTS.positions).indexOf(_notification.position) === -1) {
       throw new Error('\'' + _notification.position + '\' is not a valid position.');
     }
 
@@ -136,7 +153,7 @@ var NotificationSystem = createReactClass({
     _notification.autoDismiss = parseInt(_notification.autoDismiss, 10);
 
     _notification.uid = _notification.uid || this.uid;
-    _notification.ref = 'notification-' + _notification.uid;
+    _notification.ref = `notification-${_notification.uid}`;
     this.uid += 1;
 
     // do not add if the notification already exists based on supplied uid
@@ -157,20 +174,19 @@ var NotificationSystem = createReactClass({
     });
 
     return _notification;
-  },
+  }
 
-  getNotificationRef: function(notification) {
-    var self = this;
-    var foundNotification = null;
+  getNotificationRef = (notification) => {
+    let foundNotification = null;
 
-    Object.keys(this.refs).forEach(function(container) {
+    Object.keys(this.refs).forEach((container) => {
       if (container.indexOf('container') > -1) {
-        Object.keys(self.refs[container].refs).forEach(function(_notification) {
-          var uid = notification.uid ? notification.uid : notification;
-          if (_notification === 'notification-' + uid) {
+        Object.keys(this.refs[container].refs).forEach((_notification) => {
+          const uid = notification.uid ? notification.uid : notification;
+          if (_notification === `notification-${uid}`) {
             // NOTE: Stop iterating further and return the found notification.
             // Since UIDs are uniques and there won't be another notification found.
-            foundNotification = self.refs[container].refs[_notification];
+            foundNotification = this.refs[container].refs[_notification];
             return;
           }
         });
@@ -178,20 +194,21 @@ var NotificationSystem = createReactClass({
     });
 
     return foundNotification;
-  },
+  }
 
-  removeNotification: function(notification) {
-    var foundNotification = this.getNotificationRef(notification);
+  removeNotification = (notification) => {
+    const foundNotification = this.getNotificationRef(notification);
     return foundNotification && foundNotification._hideNotification();
-  },
+  }
 
-  editNotification: function(notification, newNotification) {
-    var foundNotification = null;
+  editNotification = (notification, newNotification) => {
+    const { notifications } = this.state;
+    let foundNotification = null;
     // NOTE: Find state notification to update by using
     // `setState` and forcing React to re-render the component.
-    var uid = notification.uid ? notification.uid : notification;
+    const uid = notification.uid ? notification.uid : notification;
 
-    var newNotifications = this.state.notifications.filter(function(stateNotification) {
+    const newNotifications = notifications.filter((stateNotification) => {
       if (uid === stateNotification.uid) {
         foundNotification = stateNotification;
         return false;
@@ -205,56 +222,40 @@ var NotificationSystem = createReactClass({
       return;
     }
 
-    newNotifications.push(
-      merge(
-        {},
-        foundNotification,
-        newNotification
-      )
-    );
+    newNotifications.push({
+      ...foundNotification,
+      ...newNotification
+    });
 
     this.setState({
       notifications: newNotifications
     });
-  },
+  }
 
-  clearNotifications: function() {
-    var self = this;
-    Object.keys(this.refs).forEach(function(container) {
+  clearNotifications = () => {
+    Object.keys(this.refs).forEach((container) => {
       if (container.indexOf('container') > -1) {
-        Object.keys(self.refs[container].refs).forEach(function(_notification) {
-          self.refs[container].refs[_notification]._hideNotification();
+        Object.keys(this.refs[container].refs).forEach((_notification) => {
+          this.refs[container].refs[_notification]._hideNotification();
         });
       }
     });
-  },
+  }
 
-  componentDidMount: function() {
-    this._getStyles.setOverrideStyle(this.props.style);
-    this._isMounted = true;
-  },
+  render() {
+    const { className, noAnimation, allowHTML } = this.props;
+    let containers = null;
+    const { notifications } = this.state;
 
-  componentWillUnmount: function() {
-    this._isMounted = false;
-  },
-
-  render: function() {
-    var self = this;
-    var containers = null;
-    var notifications = this.state.notifications;
-    var className = this.props.className;
-
-    var classNameSelector = classnames(
+    const classNameSelector = classnames(
       'notifications-wrapper', {
         [className]: !!className
       }
     );
 
     if (notifications.length) {
-      containers = Object.keys(Constants.positions).map(function(position, i) {
-        var _notifications = notifications.filter(function(notification) {
-          return position === notification.position;
-        });
+      containers = Object.keys(CONSTANTS.positions).map((position, i) => {
+        const _notifications = notifications.filter(notification => position === notification.position);
 
         if (!_notifications.length) {
           return null;
@@ -262,14 +263,14 @@ var NotificationSystem = createReactClass({
 
         return (
           <NotificationContainer
-            ref={ 'container-' + position }
-            key={ `${i}-${position}` }
-            position={ position }
-            notifications={ _notifications }
-            getStyles={ self._getStyles }
-            onRemove={ self._didNotificationRemoved }
-            noAnimation={ self.props.noAnimation }
-            allowHTML={ self.props.allowHTML }
+            ref={`container-${position}`}
+            key={`${i}-${position}`}
+            position={position}
+            notifications={_notifications}
+            getStyles={this._getStyles}
+            onRemove={this._didNotificationRemoved}
+            noAnimation={ noAnimation }
+            allowHTML={ allowHTML }
           />
         );
       });
@@ -277,11 +278,14 @@ var NotificationSystem = createReactClass({
 
 
     return (
-      <div className={ classNameSelector } style={ this._getStyles.wrapper() }>
+      <div
+        className={classNameSelector}
+        style={this._getStyles.wrapper()}
+      >
         { containers }
       </div>
     );
   }
-});
+}
 
-module.exports = NotificationSystem;
+export default NotificationSystem;

@@ -1,0 +1,46 @@
+@import "./variables.css";
+
+.notification-container {
+
+  & .notification {
+    transition: 0.3s ease-in-out;
+    transform: translate3d(0, 0, 0);
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 10px;
+    display: block;
+    opacity: 0;
+
+    &-title {
+      font-size: 14px;
+      margin: 0 0 5px 0;
+      padding: 0;
+      font-weight: bold;
+    }
+
+    &-success {
+      color: var(--black);
+      background-color: var(--suceess);
+    }
+
+    &-error {
+      color: var(--black);
+      background-color: var(--error);
+    }
+
+    &-warning {
+      color: var(--black);
+      background-color: var(--error);
+    }
+
+    &-info {
+      color: var(--black);
+      background-color: var(--info);
+    }
+  }
+}

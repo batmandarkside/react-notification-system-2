@@ -1,0 +1,86 @@
+@import "./variables.css";
+@import "./notification.css";
+
+.notification-container {
+  .header {
+    padding: 50px 15px 0;
+    text-align: center;
+    border-bottom: 6px solid var(--suceess);
+    position: relative;
+    height: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    background-attachment: fixed;
+  }
+  .content {
+    position: relative
+  }
+
+  .gradient {
+    background: #00b7ea;
+    background: linear-gradient(135deg, #00b7ea 0%, #8ca246 100%);
+    background-attachment: fixed;
+  }
+
+  .title {
+    color: #FFF;
+    font-size: 40px;
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    color: var(--suceess);
+    font-size: 20px;
+  }
+
+  .width-warning {
+    display: block;
+    font-size: 12px;
+    margin: 10px 0;
+    color: #9e0000;
+  }
+
+  .more-magic {
+    display: block;
+    margin-top: 5px;
+    color: var(--suceess);
+  }
+
+  .github-buttons {
+    margin-top: 20px;
+    padding: 20px 0;
+  }
+
+  .wrapper {
+    width: 90%;
+    margin: 20px auto 0;
+    position: relative;
+  }
+
+  h2 {
+    color: var(--suceess);
+  }
+
+  a {
+    color: var(--suceess);
+    font-weight: bold;
+  }
+
+  .hide {
+    display: none !important;
+  }
+
+  .footer {
+    color: #FFF;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+  }
+}
