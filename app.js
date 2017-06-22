@@ -58,6 +58,11 @@ const Buttons = styled.div`
       text-align: center;
     `;
 
+
+const ConfirmNotify = () => (
+  <div>ConfirmNotify test</div>
+);
+
 class App extends Component {
 
   NOTIFY = null
@@ -83,8 +88,9 @@ class App extends Component {
       },
       warning: {
         level      : 'warning',
-        message    : 'warning notification',
+        message    : <ConfirmNotify />,
         position   : 'tr',
+        allowHTML: true,
         autoDismiss: 10000,
       },
 
@@ -134,9 +140,6 @@ class App extends Component {
   }
 }
 
-const ConfirmNotify = () => (
-  <div>ConfirmNotify test</div>
-)
 
 function initApp() {
   ReactDOM.render(

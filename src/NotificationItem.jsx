@@ -30,7 +30,10 @@ class NotificationItem extends Component {
     notification: PropTypes.shape({
       level: PropTypes.string,
       title: PropTypes.string,
-      message: PropTypes.string,
+      message: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
       dismissible: PropTypes.bool,
       position: PropTypes.string,
       onAdd: PropTypes.func,
