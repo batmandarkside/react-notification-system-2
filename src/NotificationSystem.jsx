@@ -182,7 +182,7 @@ class NotificationSystem extends Component {
     Object.keys(this.refs).forEach((container) => {
       if (container.indexOf('container') > -1) {
         Object.keys(this.refs[container].refs).forEach((_notification) => {
-          const uid = notification.uid ? notification.uid : notification;
+          const uid = notification && notification.uid || notification;
           if (_notification === `notification-${uid}`) {
             // NOTE: Stop iterating further and return the found notification.
             // Since UIDs are uniques and there won't be another notification found.
